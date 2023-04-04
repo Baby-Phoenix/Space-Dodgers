@@ -47,6 +47,7 @@ public class Level : MonoBehaviour {
     private float gapSize;
     private State state;
 
+
     public enum Difficulty {
         Easy,
         Medium,

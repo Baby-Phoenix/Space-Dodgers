@@ -16,14 +16,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey;
 
-public class Bird : MonoBehaviour
+public class Bird2 : MonoBehaviour
 {
     public bool IsDeath = false;
     private const float JUMP_AMOUNT = 90f;
+    public GameObject AI;
+    public GameObject Player;
+    private static Bird2 instance;
 
-    private static Bird instance;
-
-    public static Bird GetInstance()
+    public static Bird2 GetInstance()
     {
         return instance;
     }
@@ -33,7 +34,7 @@ public class Bird : MonoBehaviour
 
     private Rigidbody2D birdRigidbody2D;
     private State state;
-    public GameObject AI;
+
     private enum State
     {
         WaitingToStart,
@@ -81,8 +82,8 @@ public class Bird : MonoBehaviour
     private bool TestInput()
     {
         return
-            Input.GetKeyDown(KeyCode.Space) ||
-            Input.GetMouseButtonDown(0) ||
+            Input.GetKeyDown(KeyCode.Z) ||
+            Input.GetMouseButtonDown(1) ||
             Input.touchCount > 0;
     }
 
@@ -94,11 +95,13 @@ public class Bird : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject != AI)
+        if (collider.gameObject != Player)
         {
+            IsDeath = true;
             birdRigidbody2D.bodyType = RigidbodyType2D.Static;
             SoundManager.PlaySound(SoundManager.Sound.Lose);
             if (OnDied != null) OnDied(this, EventArgs.Empty);
+            AI.SetActive(false);
         }
     }
 
